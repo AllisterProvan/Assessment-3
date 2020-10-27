@@ -1,0 +1,120 @@
+{%extends "layout.html"%}
+
+{%block content %}
+
+
+    <div class="item-container">
+
+        <div class="item-form-details">
+                 <div class="username">
+                    <h4 style="text-transform: capitalize;">{{current_user.username}}</h4>
+                </div>
+             <form method="POST" action="" enctype="multipart/form-data">
+                {{ item.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Please Enter Item Details</legend>
+                </fieldset>
+
+
+                <div class="form-group">
+                    {{item.item_name.label(class="form-control-label")}}
+                    {%if item.item_name.errors%}
+                        {{item.item_name(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in item.item_name.errors %}
+                                <span>{{error}}</span>
+                            {%endfor%}
+                        </div>
+                    {%else%}
+                        {{item.item_name(class=" form-control form-control-lg ")}}
+                    {% endif %}
+                </div>
+
+                 <div class="form-group">
+                    {{item.item_desc.label(class="form-control-label")}}
+                    {%if item.item_desc.errors%}
+                        {{item.item_desc(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in item.item_desc.errors %}
+                                <span>{{error}}</span>
+                            {%endfor%}
+                        </div>
+                    {%else%}
+                        {{item.item_desc(class=" form-control form-control-lg ")}}
+                    {% endif %}
+                </div>
+                 <div class="img-containter" id="itemImage">
+                    <img class='default' src="../static/images/default.jpg" id="blah" alt="item">
+                 </div>
+
+                  <div class="form-group">
+                    {{item.item_img.label(class="form-control-label")}}
+                    {%if item.item_img.errors%}
+                        {{item.item_img(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in item.item_img.errors %}
+                                <span>{{error}}</span>
+                            {%endfor%}
+                        </div>
+                    {%else%}
+                        {{item.item_img(class=" form-control form-control-lg " ,onchange="readURL(this);")}}
+                    {% endif %}
+                </div>
+
+                 <div class="form-group">
+                    {{item.item_starting_bid.label(class="form-control-label")}}
+                    {%if item.item_starting_bid.errors%}
+                        {{item.item_starting_bid(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in item.item_starting_bid.errors %}
+                                <span>{{error}}</span>
+                            {%endfor%}
+                        </div>
+                    {%else%}
+                        {{item.item_starting_bid(class=" form-control form-control-lg ")}}
+                    {% endif %}
+                </div>
+
+                 <div class="form-group">
+                    {{item.item_category.label(class="form-control-label")}}
+                    {%if item.item_category.errors%}
+                        {{item.item_category(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in item.item_category.errors %}
+                                <span>{{error}}</span>
+                            {%endfor%}
+                        </div>
+                    {%else%}
+                        {{item.item_category(class=" form-control form-control-lg ")}}
+                    {% endif %}
+                </div>
+
+                 <div class="form-group">
+                     {{ item.submit(class="btn btn-outline-success layout-btn" )}}
+                 </div>
+             </form>
+         </div>
+    </div>
+    <div style="height: 100px"></div>
+{%endblock content%}
+
+{% block scripts %}
+    <script>
+         function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah')
+                        .attr('src', e.target.result)
+                        .width(640)
+                        .height(400);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+
+{% endblock scripts %}

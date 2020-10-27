@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="bidding-row">
+        {% set count = namespace(value=0) %}
+        {% for item in items %}
+            <div class="bidding-product">
+                    <img src="{{ url_for('static', filename='data/items/' + item.item_image) }}" alt="">
+                    <h3>{{ item.name }}</h3>
+                    <p class="desc">{{ item.description }}</p>
+                    <div>
+                        {% if item.status %}
+                            <h6>Status: <strong style="color: #3A7734">Active</strong></h6>
+                        {% else %}
+                            <h6>Status: <strong style="color:#9C1A1C">Not Active</strong></h6>
+                        {%endif%}
+                        <h6>Total Bids: {{itemBid[count.value]|length}}</h6>
+                        {% set val = itemBid[count.value]|sort %}
+                        {% if val|length == 1 %}
+                            <h6>Closest Bid: {{ val[0] }} </h6>
+                        {% else %}
+                            <h6>Closest Bid: {{ val[::-1][1] }} </h6>
+                        {% endif %}
+                        <h6>Highest Bid: {{itemBid[count.value]|max }} </h6>
+
+                        {% set itemID = item.id %}
+                        <h6>Item ID: {{ itemID }}</h6>
+                    </div>
+                </div>
+                {% set count.value = count.value + 1 %}
+        {% endfor %}
+    </div>
+        <div class="bid-form">
+            <form method="POST" action="">
+                {{ bid_form.hidden_tag() }}
+                 <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">Please Enter Your Bid</legend>
+                 </fieldset>
+                  <div class="form-group">
+                        {{ bid_form.bidPrice.label(class="form-control-label")}}
+                        {% if bid_form.bidPrice.errors %}
+                            {{bid_form.bidPrice(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in bid_form.bidPrice.errors %}
+                                    <span>{{error}}</span>
+                                {%endfor%}
+                            </div>
+                        {%else%}
+                            {{bid_form.bidPrice(class=" form-control form-control-lg form-content")}}
+                        {% endif %}
+                </div>
+
+
+                <div class="form-group">
+                        {{bid_form.itemID.label(class="form-control-label")}}
+                        {%if bid_form.itemID.errors%}
+                            {{bid_form.itemID(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in bid_form.itemID.errors %}
+                                    <span>{{error}}</span>
+                                {%endfor%}
+                            </div>
+                        {%else%}
+                            {{bid_form.itemID(class=" form-control form-control-lg form-content", readonly=True)}}
+
+                        {% endif %}
+                    </div>
+
+                <div class="form-group">
+                    {{bid_form.userName.label(class="form-control-label")}}
+                    {%if bid_form.userName.errors%}
+                        {{bid_form.userName(class="form-control form-control-lg is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in bid_form.userName.errors %}
+                                <span>{{error}}</span>
+                            {%endfor%}
+                        </div>
+                    {%else%}
+                        {{bid_form.userName(class=" form-control form-control-lg form-content", readonly=True)}}
+
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                     {{bid_form.submit(class="btn btn-outline-success layout-btn bid-btn")}}
+                </div>
+
+        </div>
+<div style="height: 200px"></div>
+{% endblock %}

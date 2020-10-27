@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="navbar-third">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Choose By Category
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="{{ url_for('home') }}">All </a>
+              <a class="dropdown-item" href="{{ url_for('categories', category_name='Dress') }}">Dress</a>
+              <a class="dropdown-item" href="{{ url_for('categories', category_name='Car') }}">Car</a>
+              <a class="dropdown-item" href="{{ url_for('categories', category_name='Mobile') }}">Mobile</a>
+            </div>
+        </div>
+          <div class="add-item">
+                <a  class="btn" href="{{url_for('createitem')}}">Add Item</a>
+          </div>
+     </div>
+    <div class="bidding-row">
+        <div class="bidding-product">
+          <h6> Winner: {{ itemBid.user_name }} </h6>
+    </div>
+    </div>
+    <div style="height: 100px"></div>
+
+{% endblock %}

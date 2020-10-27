@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+    crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css')}}">
+    {% if title %}
+        <title>Flask Blog - {{ title }} </title>
+    {% else %}
+        <title>Flask Blog</title>
+    {% endif %}
+</head>
+<body>
+
+    <header>
+
+        <div class="navbar-main">
+            <div class="navbar-logo">
+                <h2>AUCTION</h2>
+            </div>
+
+
+            {% if current_user.is_authenticated %}
+                <div class="navbar-btns">
+                    <a  class="btn layout-btn" href="{{url_for('logout')}}"> LOG OUT </a>
+                </div>
+            {%else%}
+                <div class="navbar-btns">
+                    <a  class="btn layout-btn" style="margin-right: 5px;" href="{{url_for('login')}}">LOG IN</a>
+                    <a  class="btn layout-btn" href="{{url_for('register')}}">REGISTER</a>
+                </div>
+            {%endif%}
+
+        </div>
+
+    </header>
+
+<div class="content-section">
+    <form method="POST" action="">
+        {{form.hidden_tag()}}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Login</legend>
+        </fieldset>
+
+        <div class="form-group">
+            {{ form.email.label(class="form-control-label") }}
+
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors%}
+                                <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
+        </div>
+
+        <div class="form-group">
+                    {{ form.password.label(class="form-control-label") }}
+                    {% if form.password.errors %}
+                        {{ form.password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors%}
+                                <span> {{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.password(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-check">
+                    {{ form.remember(class="form-check-input") }}
+                    {{ form.remember.label(class="form-check-label") }}
+                </div>
+
+
+            </fieldset>
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn btn-outline-success layout-btn") }}
+                <small class="text-muted ml-2">
+                <a href="#">Forgot Password?</a>
+                </small>
+            </div>
+
+
+        </form>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Need An Account? <a class="ml-2" href="{{ url_for('register') }}">Register Now</a>
+        </small>
+    </div>
+    </div>
+
+    </form>
+</div>
+</body>
+</html>

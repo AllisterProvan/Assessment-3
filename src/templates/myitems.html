@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="navbar-third">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Choose By Category
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="{{ url_for('home') }}">All </a>
+              <a class="dropdown-item" href="{{ url_for('categories', category_name='Dress') }}">Dress</a>
+              <a class="dropdown-item" href="{{ url_for('categories', category_name='Car') }}">Car</a>
+              <a class="dropdown-item" href="{{ url_for('categories', category_name='Mobile') }}">Mobile</a>
+            </div>
+        </div>
+          <div class="add-item">
+                <a  class="btn" href="{{url_for('createitem')}}">Add Item</a>
+          </div>
+     </div>
+    <div class="bidding-row">
+    {% set count = namespace(value=0) %}
+    {% for item in items %}
+        {% if item.id %}
+        <div class="bidding-product">
+                <img src="{{ url_for('static', filename='data/items/' + item.item_image) }}" alt="">
+                <h3>{{ item.name }}</h3>
+                <p class="desc">description: {{ item.description }}</p>
+                <div>
+                    {% if item.status %}
+                            <h6>Status: <strong style="color: #3A7734">Active</strong></h6>
+                        {% else %}
+                            <h6>Status: <strong style="color:#9C1A1C">Not Active</strong></h6>
+
+                        {%endif%}
+                        <h6>Total Bids: {{itemBid[count.value]|length}}</h6>
+                        {% set val = itemBid[count.value]|sort %}
+                        {% if val|length == 1 %}
+                            <h6>Closest Bid: {{ val[0] }} </h6>
+                        {% else %}
+                            <h6>Closest Bid: {{ val[::-1][1] }} </h6>
+                        {% endif %}
+                        <h6>Highest Bid: {{itemBid[count.value]|max }} </h6>
+
+                        {% set itemID = item.id %}
+                        <h6>Item ID: {{ itemID }}</h6>
+                </div>
+                <button class="bidding-btn btn-danger">
+                <a href="{{ url_for('removeitem', item_id=item.id)}}">Delete Item</a>
+            </button>
+            {% if item.status == True %}
+            <button class="bidding-btn btn-danger">
+                <a href="{{ url_for('choosewinner', item_id=item.id)}}">END BIDDING</a>
+            </button>
+                <button class="bidding-btn btn-danger">
+                <a href="{{ url_for('itemstatus', item_id=item.id)}}">De-Activate</a>
+                </button>
+            {% elif item.status == None %}
+                <h6>Biddimg is closed</h6>
+            {% else %}
+                <button class="bidding-btn btn-success">
+                <a href="{{ url_for('itemstatus', item_id=item.id)}}">Activate</a>
+                </button>
+            {% endif %}
+        </div>
+        {% set count.value = count.value + 1 %}
+    {% endif %}
+    {% endfor %}
+
+    </div>
+    <div style="height: 100px"></div>
+{% endblock %}
